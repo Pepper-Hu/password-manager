@@ -1,29 +1,49 @@
 import tkinter as tk
 from tkinter import PhotoImage
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
-
+def generate_password_on_click():
+    pass
 # ---------------------------- SAVE PASSWORD ------------------------------- #
-
+def add_on_click():
+    pass
 # ---------------------------- UI SETUP ------------------------------- #
 # window
 window = tk.Tk()
 window.title("Password Manager")
-window.configure(background="white", padx=20, pady=20)
+window.configure(background="white", padx=30, pady=30)
 
 # canvas
 canvas = tk.Canvas(bg="white", height=200, width=200, highlightthickness=0)
 logo_img = PhotoImage(file="logo.png")
 canvas.create_image(100, 100, image=logo_img)
-canvas.pack()
+canvas.grid(row=0, column=1)
 
+# label
+website_label = tk.Label(text="Website: ", bg="white", fg="black", pady=5)
+website_label.grid(row=1, column=0, sticky='E')
 
+email_label = tk.Label(text="Email/Username: ", bg="white", fg="black",  pady=5)
+email_label.grid(row=2, column=0, sticky='E')
 
+password_label = tk.Label(text="Password: ", bg="white", fg="black", pady=5)
+password_label.grid(row=3, column=0, sticky='E')
 
+# entry
+website_entry = tk.Entry(width=52, highlightthickness=1)
+website_entry.grid(row=1, column=1, columnspan=2, sticky='W')
 
+email_entry = tk.Entry(width=52, highlightthickness=1)
+email_entry.grid(row=2, column=1, columnspan=2, sticky='W')
 
+password_entry = tk.Entry(width=30, highlightthickness=1)
+password_entry.grid(row=3, column=1, sticky='W')
 
+# btn
+generate_btn = tk.Button(text="Generate Password", width=15, command=generate_password_on_click)
+generate_btn.grid(row=3, column=2, sticky='W')
 
-
+add_btn = tk.Button(text="Add", width=44, command=add_on_click)
+add_btn.grid(row=4, column=1, columnspan=2, sticky='W')
 
 
 window.mainloop()
