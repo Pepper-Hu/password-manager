@@ -1,0 +1,4 @@
+1234567.com | momo@gmail.com | 1234567
+7654321.com | momo@gmail.com | 7654321
+amazon.com | momo@gmail.com | 12345678
+google.com | momo@gmail.com | 87654321

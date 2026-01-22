@@ -5,12 +5,24 @@ def generate_password_on_click():
     pass
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def add_on_click():
-    pass
+    website = website_entry.get()
+    email = email_entry.get()
+    password = password_entry.get()
+
+    with open("data.txt", "a") as f:
+        f.write(f"{website} | {email} | {password}\n")
+
+    website_entry.delete(0, 'end')
+    email_entry.delete(0, 'end')
+    password_entry.delete(0, 'end')
+
+    email_entry.insert(0, "momo@gmail.com")
+
 # ---------------------------- UI SETUP ------------------------------- #
 # window
 window = tk.Tk()
 window.title("Password Manager")
-window.configure(background="white", padx=30, pady=30)
+window.configure(background="white", padx=50, pady=50)
 
 # canvas
 canvas = tk.Canvas(bg="white", height=200, width=200, highlightthickness=0)
@@ -31,9 +43,11 @@ password_label.grid(row=3, column=0, sticky='E')
 # entry
 website_entry = tk.Entry(width=52, highlightthickness=1)
 website_entry.grid(row=1, column=1, columnspan=2, sticky='W')
+website_entry.focus()
 
 email_entry = tk.Entry(width=52, highlightthickness=1)
 email_entry.grid(row=2, column=1, columnspan=2, sticky='W')
+email_entry.insert(0, "momo@gmail.com")
 
 password_entry = tk.Entry(width=30, highlightthickness=1)
 password_entry.grid(row=3, column=1, sticky='W')
