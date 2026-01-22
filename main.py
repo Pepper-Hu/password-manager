@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import PhotoImage
+from tkinter import messagebox
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password_on_click():
     pass
@@ -9,14 +10,21 @@ def add_on_click():
     email = email_entry.get()
     password = password_entry.get()
 
-    with open("data.txt", "a") as f:
-        f.write(f"{website} | {email} | {password}\n")
+    if len(website) == 0 or len(email) == 0 or len(password) == 0:
+        messagebox.showinfo(title="Oops", message="Please don't leave any fields empty!")
+    else:
+        is_ok_save = messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail/Username: {email}\nPassword: {password}\nIs it ok to save? ")
 
-    website_entry.delete(0, 'end')
-    email_entry.delete(0, 'end')
-    password_entry.delete(0, 'end')
+        if is_ok_save:
+            with open("data.txt", "a") as f:
+                f.write(f"{website} | {email} | {password}\n")
 
-    email_entry.insert(0, "momo@gmail.com")
+            website_entry.delete(0, 'end')
+            email_entry.delete(0, 'end')
+            password_entry.delete(0, 'end')
+
+            email_entry.insert(0, "momo@gmail.com")
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 # window
