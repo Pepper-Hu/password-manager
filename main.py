@@ -3,6 +3,7 @@ from tkinter import PhotoImage
 from tkinter import messagebox
 from random import choice, randint, shuffle
 import pyperclip
+import json
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
@@ -35,22 +36,47 @@ def add_on_click():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
+    # get new data from user input
+    new_data = {
+        website: {
+            "email": email,
+            "password": password,
+        }
+    }
 
     if len(website) == 0 or len(email) == 0 or len(password) == 0:
         messagebox.showinfo(title="Oops", message="Please don't leave any fields empty!")
     else:
-        is_ok_save = messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail/Username: {email}\nPassword: {password}\nIs it ok to save? ")
+        try:
+            data_file = open("data.json", "r")
+            # read old data
+            data = json.load(data_file)
 
-        if is_ok_save:
-            with open("data.txt", "a") as f:
-                f.write(f"{website} | {email} | {password}\n")
+        except FileNotFoundError:
+            print("File not found")
+            with open("data.json", "w") as data_file:
+                json.dump(new_data, data_file, indent=4)
 
+        else:
+            # update new data
+            data.update(new_data)
+            with open("data.json", "w") as data_file:
+                # save updated data
+                json.dump(data, data_file, indent=4)
+
+        finally:
+            data_file.close()
+
+            # reset entry
             website_entry.delete(0, 'end')
             email_entry.delete(0, 'end')
             password_entry.delete(0, 'end')
 
             email_entry.insert(0, "momo@gmail.com")
 
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+def search_on_click():
+    pass
 
 # ---------------------------- UI SETUP ------------------------------- #
 # window
@@ -75,8 +101,8 @@ password_label = tk.Label(text="Password: ", bg="white", fg="black", pady=5)
 password_label.grid(row=3, column=0, sticky='E')
 
 # entry
-website_entry = tk.Entry(width=52, highlightthickness=1)
-website_entry.grid(row=1, column=1, columnspan=2, sticky='W')
+website_entry = tk.Entry(width=30, highlightthickness=1)
+website_entry.grid(row=1, column=1, sticky='W')
 website_entry.focus()
 
 email_entry = tk.Entry(width=52, highlightthickness=1)
@@ -87,6 +113,9 @@ password_entry = tk.Entry(width=30, highlightthickness=1)
 password_entry.grid(row=3, column=1, sticky='W')
 
 # btn
+search_btn = tk.Button(text="Search", width=15, command=search_on_click)
+search_btn.grid(row=1, column=2, sticky='W')
+
 generate_btn = tk.Button(text="Generate Password", width=15, command=generate_password_on_click)
 generate_btn.grid(row=3, column=2, sticky='W')
 
