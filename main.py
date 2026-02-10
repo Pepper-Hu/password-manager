@@ -48,25 +48,29 @@ def add_on_click():
         messagebox.showinfo(title="Oops", message="Please don't leave any fields empty!")
     else:
         try:
-            data_file = open("data.json", "r")
-            # read old data
-            data = json.load(data_file)
+            # open data.json if it exists
+            with open("data.json", "r") as data_file:
+                # read old data
+                data = json.load(data_file)
 
         except FileNotFoundError:
+            # if data.json does not exist
             print("File not found")
+            # create data.json
             with open("data.json", "w") as data_file:
+                # write new_data in directly
                 json.dump(new_data, data_file, indent=4)
 
         else:
-            # update new data
+            # update old data with new data
             data.update(new_data)
+
+            # re-open data.json
             with open("data.json", "w") as data_file:
-                # save updated data
+                # save/write updated data
                 json.dump(data, data_file, indent=4)
 
         finally:
-            data_file.close()
-
             # reset entry
             website_entry.delete(0, 'end')
             email_entry.delete(0, 'end')
