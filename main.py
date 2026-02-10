@@ -33,8 +33,8 @@ def generate_password_on_click():
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def add_on_click():
-    website = website_entry.get()
-    email = email_entry.get()
+    website = website_entry.get().strip().lower()
+    email = email_entry.get().strip()
     password = password_entry.get()
     # get new data from user input
     new_data = {
@@ -80,7 +80,39 @@ def add_on_click():
 
 # ---------------------------- SEARCH PASSWORD ------------------------------- #
 def search_on_click():
-    pass
+    website = website_entry.get().strip().lower()
+
+    if len(website) == 0:
+        messagebox.showinfo(title="Oops", message="Please enter the website!")
+    else:
+        try:
+            # open data.json if it exists
+            with open("data.json", "r") as data_file:
+                # read data
+                data = json.load(data_file)
+
+        except FileNotFoundError:
+            messagebox.showinfo(title="Error", message="No Data File Found")
+            # clear only the website field for retry
+            website_entry.delete(0, 'end')
+            website_entry.focus()
+
+        else:
+            try:
+                target_data = data[website]
+            except KeyError:
+                # if data_file exists but data not found
+                messagebox.showinfo(title="Error", message=f"No details exists for {website}")
+            else:
+                # if data_file exists and data found
+                messagebox.showinfo(title=f"{website.title()}", message=f"Email: {target_data["email"]}\nPassword: {target_data["password"]}")
+
+                # reset entry only when data found
+                website_entry.delete(0, 'end')
+                email_entry.delete(0, 'end')
+                password_entry.delete(0, 'end')
+
+                email_entry.insert(0, "momo@gmail.com")
 
 # ---------------------------- UI SETUP ------------------------------- #
 # window
